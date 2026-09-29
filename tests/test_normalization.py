@@ -1,5 +1,6 @@
 from src.algorithms.preprocessing.normalization import (
     min_max_normalization,
+    z_score_normalization,
 )
 
 
@@ -31,5 +32,37 @@ def test_empty_data():
     data = []
 
     result = min_max_normalization(data)
+
+    assert result == []
+    
+def test_z_score_normalization():
+    data = [10, 20, 30, 40, 50]
+
+    result = z_score_normalization(data)
+
+    expected = [
+        -1.414213562373095,
+        -0.7071067811865475,
+        0.0,
+        0.7071067811865475,
+        1.414213562373095,
+    ]
+
+    for actual, expected_value in zip(result, expected):
+        assert abs(actual - expected_value) < 1e-10
+
+
+def test_z_score_identical_values():
+    data = [5, 5, 5]
+
+    result = z_score_normalization(data)
+
+    assert result == [0.0, 0.0, 0.0]
+
+
+def test_z_score_empty_data():
+    data = []
+
+    result = z_score_normalization(data)
 
     assert result == []
